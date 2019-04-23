@@ -17,6 +17,15 @@ const getOutName = (fileName, extension = 'scpt') => {
   return outName;
 };
 
+const getDecompiledName = (fileName) => {
+  let dirName  = dirname(fileName);
+  let baseName = basename(fileName);
+  let extension = extname(fileName)
+  let outName  = join(dirName, `${baseName}_decompile.${extension}`);
+
+  return outName;
+};
+
 const spawnPromise = (cmd: any, args: Array<string>, outputChannel) => {
   return new Promise((resolve, reject) => {
     outputChannel.clear();
@@ -51,5 +60,6 @@ const spawnPromise = (cmd: any, args: Array<string>, outputChannel) => {
 export {
   getConfig,
   getOutName,
+  getDecompiledName,
   spawnPromise
 };

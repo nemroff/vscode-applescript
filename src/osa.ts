@@ -5,7 +5,7 @@ import { platform } from 'os';
 import { workspace, window } from 'vscode';
 
 // Modules
-import { getConfig, getOutName, spawnPromise } from './util';
+import { getConfig, getOutName, getDecompiledName, spawnPromise } from './util';
 
 const outputChannel = window.createOutputChannel('AppleScript');
 
@@ -52,6 +52,34 @@ const osacompile = (compileTarget: string, options: CommandFlags = { isJXA: fals
   });
 };
 
+const osadecompile = () => {
+  const config = getConfig();
+
+  // might become useful in a future release
+  options = {...config.osadecompile};
+
+  if (platform() !== 'darwin' && config.ignoreOS !== true) {
+    return window.showWarningMessage('This command is only available on macOS');
+  }
+
+  let doc = window.activeTextEditor.document;
+
+  doc.save().then( () => {
+    const decompiledName = getDecompiledName(doc.fileName);
+    const args = [doc.fileName];
+
+    spawnPromise('osadecompile', args, outputChannel)
+    .then( () => {
+      outputChannel.show(true);
+      if (config.showNotifications) window.showInformationMessage(`Successfully decompiled '${doc.fileName}'`);
+     })
+    .catch( () => {
+      outputChannel.show(true);
+      if (config.showNotifications) window.showErrorMessage('Failed to run compile (see output for details)');
+    });
+  });
+};
+
 const osascript = (options: CommandFlags = { isJXA: false }) => {
   const config = getConfig();
 
@@ -87,4 +115,4 @@ const osascript = (options: CommandFlags = { isJXA: false }) => {
   });
 };
 
-export { osacompile, osascript };
+export { osacompile, osadecompile, osascript };

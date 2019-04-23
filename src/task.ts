@@ -78,6 +78,11 @@ const createBuildTask = (isJXA = false) => {
         'taskName': 'Compile Application',
         'args': appArgs,
         'isBuildCommand': (config.defaultBuildTask === 'app') ? true : false
+      },
+      {
+        'command': 'osadecompile',
+        'taskName': 'Decompile Script',
+        'args': scriptArgs
       }
     ]
   };
