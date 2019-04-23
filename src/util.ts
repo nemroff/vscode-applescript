@@ -20,7 +20,7 @@ const getOutName = (fileName, extension = 'scpt') => {
 const getDecompiledName = (fileName) => {
   let dirName  = dirname(fileName);
   let baseName = basename(fileName);
-  let extension = extname(fileName)
+  let extension = extname(fileName);
   let outName  = join(dirName, `${baseName}_decompile.${extension}`);
 
   return outName;

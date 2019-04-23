@@ -56,7 +56,7 @@ const osadecompile = () => {
   const config = getConfig();
 
   // might become useful in a future release
-  options = {...config.osadecompile};
+  // options = {...config.osadecompile};
 
   if (platform() !== 'darwin' && config.ignoreOS !== true) {
     return window.showWarningMessage('This command is only available on macOS');
