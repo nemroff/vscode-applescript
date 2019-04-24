@@ -2,10 +2,10 @@
 
 // Dependencies
 import { platform } from 'os';
-import { workspace, window } from 'vscode';
+import { window } from 'vscode';
 
 // Modules
-import { getConfig, getOutName, getDecompiledName, spawnPromise } from './util';
+import { getConfig, getOutName, getDecompiledName, spawnPromise, spawnSidecarFile } from './util';
 
 const outputChannel = window.createOutputChannel('AppleScript');
 
@@ -68,9 +68,11 @@ const osadecompile = () => {
     const decompiledName = getDecompiledName(doc.fileName);
     const args = [doc.fileName];
 
-    spawnPromise('osadecompile', args, outputChannel)
+    outputChannel.appendLine(decompiledName);
+    outputChannel.appendLine(args.toString());
+
+    spawnSidecarFile('osadecompile', args, decompiledName, outputChannel)
     .then( () => {
-      outputChannel.show(true);
       if (config.showNotifications) window.showInformationMessage(`Successfully decompiled '${doc.fileName}'`);
      })
     .catch( () => {
