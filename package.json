@@ -13,7 +13,6 @@
     "build": "tsc --pretty --project ./",
     "dev": "tsc --watch --pretty --project ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "precommit": "npm run test",
     "test": "vscode-linter",
     "vscode:prepublish": "node run build && gulp"
   },
@@ -142,6 +141,14 @@
         }
       },
       {
+        "command": "extension.applescript.decompile",
+        "title": "AppleScript: Decompile Script",
+        "icon": {
+          "dark": "./images/icon--script-dark.svg",
+          "light": "./images/icon--script-light.svg"
+        }
+      },
+      {
         "command": "extension.applescript.createBuildTask",
         "title": "AppleScript: Create Build Task",
         "icon": {
@@ -206,8 +213,13 @@
         },
         {
           "when": "resourceLangId == applescript",
-          "command": "extension.applescript.createBuildTask",
+          "command": "extension.applescript.decompile",
           "group": "navigation@5"
+        },
+        {
+          "when": "resourceLangId == applescript",
+          "command": "extension.applescript.createBuildTask",
+          "group": "navigation@6"
         },
         {
           "when": "resourceLangId == jxa",
@@ -261,7 +273,8 @@
           "applescript"
         ],
         "extensions": [
-          ".applescript"
+          ".applescript",
+          ".scpt"
         ],
         "configuration": "./config/applescript.configuration.json"
       },
@@ -308,5 +321,10 @@
     "typescript": "^3.1.1",
     "vscode": "^1.1.21",
     "vscode-linter": "^0.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test"
+    }
   }
 }
